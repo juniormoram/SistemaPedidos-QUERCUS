@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QuercusPedidosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PedidoDetalleBar">
+    <Key>
+      <PropertyRef Name="Id_BarDetalle" />
+      <PropertyRef Name="Id_ProductoBar" />
+    </Key>
+    <Property Name="Id_BarDetalle" Type="Int32" Nullable="false" />
+    <Property Name="Id_ProductoBar" Type="Int32" Nullable="false" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <Property Name="CostoTotal" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ProductoBar" Relationship="Self.FK__PedidoDet__Id_Pr__2B3F6F97" FromRole="PedidoDetalleBar" ToRole="ProductoBar" />
+    <NavigationProperty Name="Pedido" Relationship="QuercusPedidosModel.FK__Pedido__47DBAE45" FromRole="PedidoDetalleBar" ToRole="Pedido" />
+  </EntityType>
+  <EntityType Name="PedidoDetalleRes">
+    <Key>
+      <PropertyRef Name="Id_ResDetalle" />
+      <PropertyRef Name="Id_ProductoRes" />
+    </Key>
+    <Property Name="Id_ResDetalle" Type="Int32" Nullable="false" />
+    <Property Name="Id_ProductoRes" Type="Int32" Nullable="false" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <Property Name="Observacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="CostoTotal" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ProductoRes" Relationship="Self.FK__PedidoDet__Id_Pr__403A8C7D" FromRole="PedidoDetalleRes" ToRole="ProductoRes" />
+    <NavigationProperty Name="Pedido" Relationship="QuercusPedidosModel.FK__Pedido__46E78A0C" FromRole="PedidoDetalleRes" ToRole="Pedido" />
+  </EntityType>
+  <EntityType Name="ProductoBar">
+    <Key>
+      <PropertyRef Name="Id_ProductoBar" />
+    </Key>
+    <Property Name="Id_ProductoBar" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Precio" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PedidoDetalleBar" Relationship="Self.FK__PedidoDet__Id_Pr__2B3F6F97" FromRole="ProductoBar" ToRole="PedidoDetalleBar" />
+  </EntityType>
+  <EntityType Name="ProductoRes">
+    <Key>
+      <PropertyRef Name="Id_ProductoRes" />
+    </Key>
+    <Property Name="Id_ProductoRes" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Precio" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="PedidoDetalleRes" Relationship="Self.FK__PedidoDet__Id_Pr__403A8C7D" FromRole="ProductoRes" ToRole="PedidoDetalleRes" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__PedidoDet__Id_Pr__2B3F6F97">
+    <End Role="ProductoBar" Type="Self.ProductoBar" Multiplicity="1" />
+    <End Role="PedidoDetalleBar" Type="Self.PedidoDetalleBar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductoBar">
+        <PropertyRef Name="Id_ProductoBar" />
+      </Principal>
+      <Dependent Role="PedidoDetalleBar">
+        <PropertyRef Name="Id_ProductoBar" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PedidoDet__Id_Pr__403A8C7D">
+    <End Role="ProductoRes" Type="Self.ProductoRes" Multiplicity="1" />
+    <End Role="PedidoDetalleRes" Type="Self.PedidoDetalleRes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductoRes">
+        <PropertyRef Name="Id_ProductoRes" />
+      </Principal>
+      <Dependent Role="PedidoDetalleRes">
+        <PropertyRef Name="Id_ProductoRes" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QuercusPedidosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PedidoDetalleBar" EntityType="Self.PedidoDetalleBar" />
+    <EntitySet Name="PedidoDetalleRes" EntityType="Self.PedidoDetalleRes" />
+    <EntitySet Name="ProductoBar" EntityType="Self.ProductoBar" />
+    <EntitySet Name="ProductoRes" EntityType="Self.ProductoRes" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK__PedidoDet__Id_Pr__2B3F6F97" Association="Self.FK__PedidoDet__Id_Pr__2B3F6F97">
+      <End Role="ProductoBar" EntitySet="ProductoBar" />
+      <End Role="PedidoDetalleBar" EntitySet="PedidoDetalleBar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PedidoDet__Id_Pr__403A8C7D" Association="Self.FK__PedidoDet__Id_Pr__403A8C7D">
+      <End Role="ProductoRes" EntitySet="ProductoRes" />
+      <End Role="PedidoDetalleRes" EntitySet="PedidoDetalleRes" />
+    </AssociationSet>
+    <EntitySet Name="Pedido" EntityType="QuercusPedidosModel.Pedido" />
+    <AssociationSet Name="FK__Pedido__46E78A0C" Association="QuercusPedidosModel.FK__Pedido__46E78A0C">
+      <End Role="PedidoDetalleRes" EntitySet="PedidoDetalleRes" />
+      <End Role="Pedido" EntitySet="Pedido" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Pedido__47DBAE45" Association="QuercusPedidosModel.FK__Pedido__47DBAE45">
+      <End Role="PedidoDetalleBar" EntitySet="PedidoDetalleBar" />
+      <End Role="Pedido" EntitySet="Pedido" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Pedido">
+    <Key>
+      <PropertyRef Name="Id_Pedido" />
+    </Key>
+    <Property Name="Id_Pedido" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Mesa" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Estado" Type="Boolean" Nullable="false" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Subtotal" Type="Int32" Nullable="false" />
+    <Property Name="Iva" Type="Int32" Nullable="false" />
+    <Property Name="Total" Type="Int32" Nullable="false" />
+    <Property Name="Id_ResDetalle" Type="Int32" />
+    <Property Name="Id_ProductoRes" Type="Int32" />
+    <Property Name="Id_BarDetalle" Type="Int32" />
+    <Property Name="Id_ProductoBar" Type="Int32" />
+    <NavigationProperty Name="PedidoDetalleRes" Relationship="QuercusPedidosModel.FK__Pedido__46E78A0C" FromRole="Pedido" ToRole="PedidoDetalleRes" />
+    <NavigationProperty Name="PedidoDetalleBar" Relationship="QuercusPedidosModel.FK__Pedido__47DBAE45" FromRole="Pedido" ToRole="PedidoDetalleBar" />
+  </EntityType>
+  <Association Name="FK__Pedido__46E78A0C">
+    <End Type="QuercusPedidosModel.PedidoDetalleRes" Role="PedidoDetalleRes" Multiplicity="0..1" />
+    <End Type="QuercusPedidosModel.Pedido" Role="Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PedidoDetalleRes">
+        <PropertyRef Name="Id_ResDetalle" />
+        <PropertyRef Name="Id_ProductoRes" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="Id_ResDetalle" />
+        <PropertyRef Name="Id_ProductoRes" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Pedido__47DBAE45">
+    <End Type="QuercusPedidosModel.PedidoDetalleBar" Role="PedidoDetalleBar" Multiplicity="0..1" />
+    <End Type="QuercusPedidosModel.Pedido" Role="Pedido" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PedidoDetalleBar">
+        <PropertyRef Name="Id_BarDetalle" />
+        <PropertyRef Name="Id_ProductoBar" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="Id_BarDetalle" />
+        <PropertyRef Name="Id_ProductoBar" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

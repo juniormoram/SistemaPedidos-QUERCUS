@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e67e281970bf48468de647c0b9483039" Name="Diagram1">
+        <EntityTypeShape EntityType="QuercusPedidosModel.PedidoDetalleBar" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuercusPedidosModel.PedidoDetalleRes" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuercusPedidosModel.ProductoBar" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuercusPedidosModel.ProductoRes" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuercusPedidosModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="QuercusPedidosModel.FK__PedidoDet__Id_Pr__2B3F6F97" ManuallyRouted="false" />
+        <AssociationConnector Association="QuercusPedidosModel.FK__PedidoDet__Id_Pr__403A8C7D" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QuercusPedidosModel.Pedido" Width="1.5" PointX="5.25" PointY="0.875" />
+        <AssociationConnector Association="QuercusPedidosModel.FK__Pedido__46E78A0C" />
+        <AssociationConnector Association="QuercusPedidosModel.FK__Pedido__47DBAE45" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

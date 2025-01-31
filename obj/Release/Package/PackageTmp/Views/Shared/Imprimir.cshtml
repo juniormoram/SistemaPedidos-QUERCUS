@@ -1,0 +1,71 @@
+﻿@model QuercusPedidos.DetallePedido
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="site.css">
+    <script src="script.js"></script>
+    @*<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+    <script>
+        function imprimir() {
+            window.print();
+        }
+    </script>
+</head>
+<body>
+    <div class="ticket">
+        <p class="centrado">
+            Ticket de venta<br>QUERCUS REST<br> Tel: 2201-5082
+        </p>
+        <table class="tableim">
+
+            <tr>
+                <th class="cantidad">Cant</th>
+                <th class="producto">Product</th>
+                <th class="precio">₡₡</th>
+            </tr>
+
+
+            @foreach (var datoTablaA in Model.DatosBar)
+            {
+                <tr>
+                    <td class="cantidad">@datoTablaA.Cantidad</td>
+                    <td class="producto">@datoTablaA.Nombre</td>
+                    <td class="precio">@datoTablaA.CostoTotal</td>
+                </tr>
+            }
+
+
+
+            @foreach (var datoTablaB in Model.DatosRes)
+            {
+                <tr>
+                    <td class="cantidad">@datoTablaB.Cantidad</td>
+                    <td class="producto">@datoTablaB.Nombre</td>
+                    <td class="precio">@datoTablaB.CostoTotal</td>
+                </tr>
+            }
+                       
+
+            @foreach (var datoPed in Model.DatosPed)
+            {
+                <tr>                 
+
+                    <td></td>
+                    <td class="producto">TOTAL</td>
+                    <td>@datoPed.MontoTotal</td>
+                </tr>
+
+            }
+
+        </table>
+        <p class="centrado">
+            ¡GRACIAS POR SU COMPRA!
+            <br>Quercus Rest <br> Servicio Express
+        </p>
+        <button class="oculto-impresion" onclick="imprimir()">Imprimir</button>
+    </div>
+</body>
+</html>
+

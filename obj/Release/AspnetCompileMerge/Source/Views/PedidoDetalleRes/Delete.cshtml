@@ -1,0 +1,51 @@
+﻿@model QuercusPedidos.PedidoDetalleRes
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Esta seguro de eliminar este platillo del pedido?</h3>
+<div>    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Platillo
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductoRes.Nombre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cantidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CostoTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostoTotal)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Eliminar" class="btn btn-success" /> |
+        @Html.ActionLink("Regresar al listado de platillos", "Index")
+    </div>
+    }
+</div>

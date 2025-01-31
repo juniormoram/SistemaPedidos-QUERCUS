@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QuercusPedidosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Pedido">
+    <Key>
+      <PropertyRef Name="Id_Pedido" />
+    </Key>
+    <Property Name="Id_Pedido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Mesa" Type="varchar" MaxLength="20" />
+    <Property Name="Estado" Type="bit" Nullable="false" />
+    <Property Name="Fecha" Type="datetime" Nullable="false" />
+    <Property Name="Subtotal" Type="int" Nullable="false" />
+    <Property Name="Iva" Type="int" Nullable="false" />
+    <Property Name="Total" Type="int" Nullable="false" />
+    <Property Name="Id_ResDetalle" Type="int" />
+    <Property Name="Id_ProductoRes" Type="int" />
+    <Property Name="Id_BarDetalle" Type="int" />
+    <Property Name="Id_ProductoBar" Type="int" />
+  </EntityType>
+  <EntityType Name="PedidoDetalleBar">
+    <Key>
+      <PropertyRef Name="Id_BarDetalle" />
+      <PropertyRef Name="Id_ProductoBar" />
+    </Key>
+    <Property Name="Id_BarDetalle" Type="int" Nullable="false" />
+    <Property Name="Id_ProductoBar" Type="int" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+    <Property Name="CostoTotal" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PedidoDetalleRes">
+    <Key>
+      <PropertyRef Name="Id_ResDetalle" />
+      <PropertyRef Name="Id_ProductoRes" />
+    </Key>
+    <Property Name="Id_ResDetalle" Type="int" Nullable="false" />
+    <Property Name="Id_ProductoRes" Type="int" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+    <Property Name="Observacion" Type="varchar" MaxLength="30" />
+    <Property Name="CostoTotal" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductoBar">
+    <Key>
+      <PropertyRef Name="Id_ProductoBar" />
+    </Key>
+    <Property Name="Id_ProductoBar" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Precio" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductoRes">
+    <Key>
+      <PropertyRef Name="Id_ProductoRes" />
+    </Key>
+    <Property Name="Id_ProductoRes" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Precio" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK__PedidoDet__Id_Pr__2B3F6F97">
+    <End Role="ProductoBar" Type="Self.ProductoBar" Multiplicity="1" />
+    <End Role="PedidoDetalleBar" Type="Self.PedidoDetalleBar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductoBar">
+        <PropertyRef Name="Id_ProductoBar" />
+      </Principal>
+      <Dependent Role="PedidoDetalleBar">
+        <PropertyRef Name="Id_ProductoBar" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PedidoDet__Id_Pr__403A8C7D">
+    <End Role="ProductoRes" Type="Self.ProductoRes" Multiplicity="1" />
+    <End Role="PedidoDetalleRes" Type="Self.PedidoDetalleRes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductoRes">
+        <PropertyRef Name="Id_ProductoRes" />
+      </Principal>
+      <Dependent Role="PedidoDetalleRes">
+        <PropertyRef Name="Id_ProductoRes" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QuercusPedidosModelStoreContainer">
+    <EntitySet Name="Pedido" EntityType="Self.Pedido" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PedidoDetalleBar" EntityType="Self.PedidoDetalleBar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PedidoDetalleRes" EntityType="Self.PedidoDetalleRes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductoBar" EntityType="Self.ProductoBar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductoRes" EntityType="Self.ProductoRes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__PedidoDet__Id_Pr__2B3F6F97" Association="Self.FK__PedidoDet__Id_Pr__2B3F6F97">
+      <End Role="ProductoBar" EntitySet="ProductoBar" />
+      <End Role="PedidoDetalleBar" EntitySet="PedidoDetalleBar" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PedidoDet__Id_Pr__403A8C7D" Association="Self.FK__PedidoDet__Id_Pr__403A8C7D">
+      <End Role="ProductoRes" EntitySet="ProductoRes" />
+      <End Role="PedidoDetalleRes" EntitySet="PedidoDetalleRes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

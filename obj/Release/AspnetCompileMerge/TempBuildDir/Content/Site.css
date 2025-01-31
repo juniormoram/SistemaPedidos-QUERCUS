@@ -1,0 +1,93 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+td,
+th,
+tr,
+tableim {
+    border-top: 1px solid black;
+    border-collapse: collapse;
+   /* font-size: 12px;*/
+    
+}
+
+    td.producto,
+    th.producto {
+        width: 80px;
+        max-width: 80px;
+    }
+
+    td.cantidad,
+    th.cantidad {
+        width: 40px;
+        max-width: 40px;
+        word-break: break-all;
+    }
+
+    td.precio,
+    th.precio {
+        width: 40px;
+        max-width: 40px;
+        word-break: break-all;
+    }
+
+.centrado {
+    text-align: center;
+    align-content: center;
+}
+
+.ticket {
+    width: 155px;
+    max-width: 155px;
+    font-size: 14px;
+    font-family: 'sans-serif';
+
+    @media print {
+        .oculto-impresion,
+        .oculto-impresion * {
+            display: none !important;
+        }
+    }
+}
+
+    /* Set padding to keep content from hitting the edges */
+    .body-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+    .dl-horizontal dt {
+        white-space: normal;
+    }
+
+    /* Set width on the form input elements since they're 100% wide by default */
+    input,
+    select,
+    textarea {
+        max-width: 280px;
+    }
+
+    .navbar-inverse .navbar-toggle:hover,
+    .navbar-inverse .navbar-toggle:focus {
+        background-color: #777;
+        border-color: #fff
+    }
+
+    .container1 {
+        display: inline-block; /* Hacer que el contenedor ocupe solo el espacio necesario */
+        border: 1px solid #000; /* Borde */
+        padding: 5px; /* Espacio interior */
+        margin-bottom: 20px; /* Margen inferior */
+    }
+
+    @media print {
+        @page {
+            size: auto; /* Tamaño automático */
+            margin: 5mm; /* Márgenes de la página */
+        }
+    }

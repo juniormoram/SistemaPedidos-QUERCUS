@@ -1,0 +1,58 @@
+﻿@model QuercusPedidos.DetallePedido
+
+@{
+    ViewBag.Title = "Cierre";
+}
+
+<h2>Cierre de cuentas</h2>
+
+<div class="form-group">
+    @using (Html.BeginForm("Cierre", "Pedido", FormMethod.Post))
+    {
+        <input type="datetime" name="fechaCierre" class="form-text"/>
+        <input type="submit" value="Actualizar cierre" class="btn btn-sm btn-info" />
+    }
+
+</div>
+
+   
+    <table class="table">
+
+        <tr>
+            <th>Pedido</th>
+            <th>Mesa</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+        </tr>
+
+
+        @foreach (var datoTablaA in Model.DatosCierre)
+        {
+            <tr>
+                <td>@datoTablaA.IdPedido</td>
+                <td>@datoTablaA.Mesa</td>
+                <td>@datoTablaA.Fecha</td>
+                <td>@datoTablaA.Monto</td>
+            </tr>
+        }
+
+    </table>
+
+    <table class="table">
+
+        <tr>
+            <th>Monto Bar</th>
+            <th>Monto Res</th>
+            <th>Monto Total</th>
+        </tr>
+
+        @foreach (var datoTablaB in Model.DatosMoneda)
+        {
+            <tr>
+                <td>@datoTablaB.MontoTotalB</td>
+                <td>@datoTablaB.MontoTotalR</td>
+                <td>@datoTablaB.MontoTotal</td>
+            </tr>
+        }
+
+    </table>

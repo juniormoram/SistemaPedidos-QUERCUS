@@ -1,0 +1,46 @@
+﻿@model IEnumerable<QuercusPedidos.ProductoRes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Platillos</h2>
+
+<p>
+    @Html.ActionLink("Ingresar nuevo platillo", "Create")
+</p>
+
+<form asp-controller="Producto" asp-action="Index">
+    <p>
+        Buscar por nombre de producto: <input type="text" name="buscar" class="form-text" />
+        <input type="submit" value="Buscar" class="btn btn-sm btn-info" />
+    </p>
+</form>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Precio)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Precio)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id_ProductoRes }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Elminar", "Delete", new { id=item.Id_ProductoRes }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

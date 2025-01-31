@@ -1,0 +1,72 @@
+﻿@model IEnumerable<QuercusPedidos.Pedido>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Pedidos/ordenes</h2>
+
+<p>
+    @Html.ActionLink("Nuevo pedido", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*<a asp-action="Index" asp-route-filtro="@ViewData["FiltroPedido"]"></a>*@
+            Pedido/Orden
+        </th>
+        <th>
+            Mesa/Cliente
+        </th>
+        <th>
+            Cancelada?
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Iva)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id_Pedido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mesa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subtotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Iva)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.ActionLink("Actualizar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Detalles", "DetallePedido", "Pedido", new { id = item.Id_Pedido }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Agregar bebida", "Create", "PedidoDetalleBar", new { id = item.Id_Pedido }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Agregar platillo", "Create", "PedidoDetalleRes", new { id = item.Id_Pedido }, new { @class = "btn btn-warning" })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<QuercusPedidos.PedidoDetalleRes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Platillo de los pedidos</h2>
+
+<form asp-controller="Bebidas" asp-action="Index">
+    <p>
+        Buscar por numero de pedido/orden: <input type="text" name="buscarD" class="form-text" />
+        <input type="submit" value="Buscar" class="btn btn-sm btn-info" />
+    </p>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            Numero de pedido/orden
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductoRes.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CostoTotal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id_ResDetalle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductoRes.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cantidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Observacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CostoTotal)
+        </td>
+        <td>
+            @Html.ActionLink("Actualizar", "Edit", new { id = item.Id_ResDetalle, id2 = item.Id_ProductoRes }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id_ResDetalle, id2 = item.Id_ProductoRes }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,37 @@
+﻿@model QuercusPedidos.ProductoBar
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Esta seguro de eliminar esta bebida?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-success" /> |
+            @Html.ActionLink("Regresar al listado de bebidas", "Index")
+        </div>
+    }
+</div>
