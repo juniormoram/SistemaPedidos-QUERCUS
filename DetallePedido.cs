@@ -21,9 +21,11 @@ namespace QuercusPedidos
         public string Mesa { get; set; }
         public string Observacion { get; set; }
         public int CostoTotal { get; set; }
+        public double ImpServicio { get; set; }
         public int MontoTotalB { get; set; }
         public int MontoTotalR { get; set; }
         public int MontoTotal { get; set; }
+        public int SubTotal { get; set; }
         public int Monto { get; set; }
         public DateTime Fecha { get; set; }
         public int MontoRes { get; set; }

@@ -5,27 +5,35 @@
 <head>
     <link rel="stylesheet" href="site.css">
     <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @*<meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
-    <script>
-        function imprimir() {
-            window.print();
-        }
-    </script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+
+<script>
+   function imprimir(idPedido) {
+    window.print();
+
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("ActualizarEstadoPedido", "Pedido")',
+        data: { id: idPedido },        
+    });
+}
+</script>
+
+
 </head>
 <body>
     <div class="ticket">
         <p class="centrado">
-            Ticket de venta<br>QUERCUS REST<br> Tel: 2201-5082
+            QUERCUS REST<br> EXPRESS: 8961-7996
         </p>
         <table class="tableim">
-
             <tr>
-                <th class="cantidad">Cant</th>
+                <th class="cantidad">Qt</th>
                 <th class="producto">Product</th>
                 <th class="precio">₡₡</th>
             </tr>
-
 
             @foreach (var datoTablaA in Model.DatosBar)
             {
@@ -36,8 +44,6 @@
                 </tr>
             }
 
-
-
             @foreach (var datoTablaB in Model.DatosRes)
             {
                 <tr>
@@ -46,14 +52,26 @@
                     <td class="precio">@datoTablaB.CostoTotal</td>
                 </tr>
             }
-                       
+
 
             @foreach (var datoPed in Model.DatosPed)
             {
-                <tr>                 
+                <tr class="produc">
 
                     <td></td>
-                    <td class="producto">TOTAL</td>
+                    <td class="produc">Subtotal</td>
+                    <td>@datoPed.SubTotal</td>                      
+                </tr>
+                <tr class="produc">
+
+                    <td></td>
+                    <td class="produc">10% serv</td>
+                    <td>@datoPed.ImpServicio</td>
+                </tr>
+                <tr class="produc">
+
+                    <td></td>
+                    <td class="produc">Total</td>
                     <td>@datoPed.MontoTotal</td>
                 </tr>
 
@@ -62,9 +80,8 @@
         </table>
         <p class="centrado">
             ¡GRACIAS POR SU COMPRA!
-            <br>Quercus Rest <br> Servicio Express
         </p>
-        <button class="oculto-impresion" onclick="imprimir()">Imprimir</button>
+        <button class="oculto-impresion" onclick="imprimir(@Model.DatosPed.First().IdPedido)">Imprimir</button>
     </div>
 </body>
 </html>

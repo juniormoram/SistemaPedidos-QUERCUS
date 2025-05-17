@@ -28,6 +28,39 @@ namespace QuercusPedidos.Controllers
             return View(await detalles.ToListAsync());
         }
 
+        private void ActualizarTotalesPedido(int idPedido)
+        {
+            using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
+            {
+                var pedido = BD.Pedido.Find(idPedido);
+                if (pedido == null) return;
+
+                int subTotRes = BD.PedidoDetalleRes
+                    .Where(d => d.Id_ResDetalle == pedido.Id_ResDetalle)
+                    .Sum(d => (int?)d.CostoTotal) ?? 0;
+
+                int subTotBar = BD.PedidoDetalleBar
+                    .Where(d => d.Id_BarDetalle == pedido.Id_BarDetalle)
+                    .Sum(d => (int?)d.CostoTotal) ?? 0;
+
+                double iva = 0.13;
+                double impServi = 0.10;
+
+                int totalBruto = subTotRes + subTotBar;
+                int ivaCalc = (int)(iva * totalBruto);
+                int impServCalc = (int)(impServi * totalBruto);
+                int totalFinal = totalBruto + impServCalc;
+
+                pedido.Subtotal = totalBruto;
+                pedido.Iva = ivaCalc;
+                pedido.Total = totalFinal;
+                pedido.Fecha = DateTime.Now;
+
+                BD.Entry(pedido).State = EntityState.Modified;
+                BD.SaveChanges();
+            }
+        }
+
         // GET: PedidoDetalleRes/Create
         public ActionResult Create(int? id)
         {
@@ -59,6 +92,9 @@ namespace QuercusPedidos.Controllers
 
                     db.PedidoDetalleRes.Add(pedidoDetalleRes);
                     db.SaveChanges();
+
+                    ActualizarTotalesPedido((int)id);
+
                     return RedirectToAction("Create");
                 }
                 catch
@@ -112,6 +148,9 @@ namespace QuercusPedidos.Controllers
 
                     db.Entry(pedidoDetalleRes).State = EntityState.Modified;
                     db.SaveChanges();
+
+                    ActualizarTotalesPedido((int)id);
+
                     return RedirectToAction("Index");
                 }
                 catch

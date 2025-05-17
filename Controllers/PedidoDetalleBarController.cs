@@ -26,7 +26,40 @@ namespace QuercusPedidos.Controllers
                 detalles = detalles.Where(s => s.Id_BarDetalle.Equals(buscarD));
             }
             return View(await detalles.ToListAsync());
-        }        
+        }
+
+        private void ActualizarTotalesPedido(int idPedido)
+        {
+            using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
+            {
+                var pedido = BD.Pedido.Find(idPedido);
+                if (pedido == null) return;
+
+                int subTotRes = BD.PedidoDetalleRes
+                    .Where(d => d.Id_ResDetalle == pedido.Id_ResDetalle)
+                    .Sum(d => (int?)d.CostoTotal) ?? 0;
+
+                int subTotBar = BD.PedidoDetalleBar
+                    .Where(d => d.Id_BarDetalle == pedido.Id_BarDetalle)
+                    .Sum(d => (int?)d.CostoTotal) ?? 0;
+
+                double iva = 0.13;
+                double impServi = 0.10;
+
+                int totalBruto = subTotRes + subTotBar;
+                int ivaCalc = (int)(iva * totalBruto);
+                int impServCalc = (int)(impServi * totalBruto);
+                int totalFinal = totalBruto + impServCalc;
+
+                pedido.Subtotal = totalBruto;
+                pedido.Iva = ivaCalc;
+                pedido.Total = totalFinal;
+                pedido.Fecha = DateTime.Now;
+
+                BD.Entry(pedido).State = EntityState.Modified;
+                BD.SaveChanges();
+            }
+        }
 
         // GET: PedidoDetalleBar/Create
         public ActionResult Create(int? id)
@@ -58,6 +91,9 @@ namespace QuercusPedidos.Controllers
 
                 db.PedidoDetalleBar.Add(pedidoDetalleBar);
                 db.SaveChanges();
+
+                ActualizarTotalesPedido((int)id);
+
                 return RedirectToAction("Create");
             }
 
@@ -104,12 +140,15 @@ namespace QuercusPedidos.Controllers
 
                 db.Entry(pedidoDetalleBar).State = EntityState.Modified;
                 db.SaveChanges();
+
+                ActualizarTotalesPedido((int)id);
+
                 return RedirectToAction("Index");
             }
             ViewBag.Id_ProductoBar = new SelectList(db.ProductoBar, "Id_ProductoBar", "Nombre", pedidoDetalleBar.Id_ProductoBar);
             return View(pedidoDetalleBar);
         }
-
+               
         // GET: PedidoDetalleBar/Delete/5
         public ActionResult Delete(int? id, int? id2)
         {

@@ -23,15 +23,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Fecha)
-        </th>
+        </th>        
         <th>
-            @Html.DisplayNameFor(model => model.Subtotal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Iva)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Total)
+            Monto Total
         </th>
         <th></th>
     </tr>
@@ -50,15 +44,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
+            </td>            
             <td>
-                @Html.DisplayFor(modelItem => item.Subtotal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Iva)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
+                ₡ @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
                 @Html.ActionLink("Actualizar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |

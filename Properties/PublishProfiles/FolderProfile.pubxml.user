@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\DELL\Desktop\Quer</_PublishTargetUrl>
-    <History>True|2025-03-05T22:34:00.2476959Z;True|2024-03-18T10:41:41.3463041-06:00;True|2024-03-16T11:15:46.5610072-06:00;True|2024-03-16T11:01:38.6540107-06:00;True|2024-03-16T10:35:40.4635747-06:00;True|2024-02-29T10:04:16.8857410-06:00;True|2024-01-19T10:15:09.1616048-06:00;</History>
+    <History>True|2025-05-17T20:22:48.2436008Z;True|2025-05-14T17:14:45.7043204-06:00;True|2025-03-05T16:34:00.2476959-06:00;True|2024-03-18T10:41:41.3463041-06:00;True|2024-03-16T11:15:46.5610072-06:00;True|2024-03-16T11:01:38.6540107-06:00;True|2024-03-16T10:35:40.4635747-06:00;True|2024-02-29T10:04:16.8857410-06:00;True|2024-01-19T10:15:09.1616048-06:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -16,10 +16,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>03/05/2025 16:33:52</publishTime>
+      <publishTime>05/17/2025 14:21:55</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>03/05/2025 16:33:52</publishTime>
+      <publishTime>05/17/2025 14:21:51</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/16/2020 20:38:42</publishTime>
@@ -58,10 +58,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/22/2019 01:06:16</publishTime>
     </File>
     <File Include="bin/QuercusPedidos.dll">
-      <publishTime>03/05/2025 16:33:10</publishTime>
+      <publishTime>05/17/2025 14:20:13</publishTime>
     </File>
     <File Include="bin/QuercusPedidos.pdb">
-      <publishTime>03/05/2025 16:33:10</publishTime>
+      <publishTime>05/17/2025 14:20:13</publishTime>
     </File>
     <File Include="bin/RawPrint.dll">
       <publishTime>09/12/2019 03:05:30</publishTime>
@@ -261,8 +261,11 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Content/bootstrap.min.css.map">
       <publishTime>01/02/2024 15:35:50</publishTime>
     </File>
+    <File Include="Content/Querimg.jpg">
+      <publishTime>05/17/2025 11:20:49</publishTime>
+    </File>
     <File Include="Content/Site.css">
-      <publishTime>03/18/2024 10:37:19</publishTime>
+      <publishTime>05/17/2025 14:18:03</publishTime>
     </File>
     <File Include="Content/toastr.css">
       <publishTime>03/16/2024 18:03:46</publishTime>
@@ -298,7 +301,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/05/2024 08:56:08</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>03/05/2025 16:33:27</publishTime>
+      <publishTime>05/17/2025 14:20:45</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>01/02/2024 15:35:49</publishTime>
@@ -364,7 +367,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/29/2024 09:39:40</publishTime>
     </File>
     <File Include="Views/Pedido/Index.cshtml">
-      <publishTime>02/29/2024 09:39:38</publishTime>
+      <publishTime>05/14/2025 11:50:46</publishTime>
     </File>
     <File Include="Views/PedidoDetalleBar/Create.cshtml">
       <publishTime>01/10/2024 11:25:03</publishTime>
@@ -418,16 +421,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/09/2024 13:10:01</publishTime>
     </File>
     <File Include="Views/Shared/DetallePedido.cshtml">
-      <publishTime>03/18/2024 08:43:57</publishTime>
+      <publishTime>05/14/2025 12:07:43</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>01/02/2024 15:34:49</publishTime>
     </File>
     <File Include="Views/Shared/Imprimir.cshtml">
-      <publishTime>03/18/2024 10:38:33</publishTime>
+      <publishTime>05/17/2025 14:16:44</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>01/12/2024 11:27:51</publishTime>
+      <publishTime>05/17/2025 13:35:57</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>01/02/2024 15:34:49</publishTime>

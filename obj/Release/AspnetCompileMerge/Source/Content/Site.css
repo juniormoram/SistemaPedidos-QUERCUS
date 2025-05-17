@@ -9,27 +9,35 @@ tr,
 tableim {
     border-top: 1px solid black;
     border-collapse: collapse;
+
    /* font-size: 12px;*/
     
 }
 
     td.producto,
     th.producto {
-        width: 80px;
-        max-width: 80px;
+        width: 100px;
+        max-width: 100px;
+    }
+
+    tr,.produc,
+    td.produc,
+    th.produc {
+        width: 100px;
+        max-width: 100px;
     }
 
     td.cantidad,
     th.cantidad {
-        width: 40px;
-        max-width: 40px;
+        width: 21px;
+        max-width: 21px;
         word-break: break-all;
     }
 
     td.precio,
     th.precio {
-        width: 40px;
-        max-width: 40px;
+        width: 45px;
+        max-width: 45px;
         word-break: break-all;
     }
 
@@ -39,8 +47,8 @@ tableim {
 }
 
 .ticket {
-    width: 155px;
-    max-width: 155px;
+    width: 158px;
+    max-width: 158px;
     font-size: 14px;
     font-family: 'sans-serif';
 
