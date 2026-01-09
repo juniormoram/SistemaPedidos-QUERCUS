@@ -30,5 +30,6 @@ namespace QuercusPedidos
         public DateTime Fecha { get; set; }
         public int MontoRes { get; set; }
         public int MontoBar { get; set; }
+        
     }
 }

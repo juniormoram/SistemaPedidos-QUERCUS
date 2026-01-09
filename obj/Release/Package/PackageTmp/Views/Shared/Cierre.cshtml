@@ -32,7 +32,7 @@
                 <td>@datoTablaA.IdPedido</td>
                 <td>@datoTablaA.Mesa</td>
                 <td>@datoTablaA.Fecha</td>
-                <td>@datoTablaA.Monto</td>
+                <td>₡ @datoTablaA.Monto</td>
             </tr>
         }
 
@@ -49,9 +49,9 @@
         @foreach (var datoTablaB in Model.DatosMoneda)
         {
             <tr>
-                <td>@datoTablaB.MontoTotalB</td>
-                <td>@datoTablaB.MontoTotalR</td>
-                <td>@datoTablaB.MontoTotal</td>
+                <td>₡ @datoTablaB.MontoTotalB</td>
+                <td>₡ @datoTablaB.MontoTotalR</td>
+                <td>₡ @datoTablaB.MontoTotal</td>
             </tr>
         }
 

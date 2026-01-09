@@ -4,90 +4,216 @@
     ViewBag.Title = "DetallePedido";
 }
 
-<h2>Bebidas de la orden</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
 
-<table class="table">
+        .contenedor-principal {
+            display: flex;
+            height: auto;
+        }
 
-    <tr>
-        <th>Cantidad</th>
-        <th>Bebida</th>
-        <th>Costo</th>
-    </tr>
+        .contenido-izquierdo {
+            width: auto;
+            max-width: 75%;
+            padding-right: 5%;
+            overflow-y: auto;
+        }
+
+        .contenido-derecho {
+            width: 30%;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: auto;
+            max-width: 75%;
+        }
+
+        th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 3px;
+        }
+
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 2px;
+            min-width: 90px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        select {
+            padding: 3px;
+            border-radius: 6px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="contenedor-principal">
+
+        <div class="contenido-izquierdo">
+
+            <h3>Bebidas de la orden</h3>
+
+            <table>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Bebida</th>
+                    <th>Costo</th>
+                </tr>
+
+                @foreach (var datoTablaA in Model.DatosBar)
+                {
+                    <tr>
+                        <td>@datoTablaA.Cantidad</td>
+                        <td>@datoTablaA.Nombre</td>
+                        <td>₡ @datoTablaA.CostoTotal</td>
+                    </tr>
+                }
+            </table>
+
+            <h3>Platillos de la orden</h3>
+
+            <table>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Platillo</th>
+                    <th>Observacion</th>
+                    <th>Costo</th>
+                </tr>
+
+                @foreach (var datoTablaB in Model.DatosRes)
+                {
+                    <tr>
+                        <td>@datoTablaB.Cantidad</td>
+                        <td>@datoTablaB.Nombre</td>
+                        <td>@datoTablaB.Observacion</td>
+                        <td>₡ @datoTablaB.CostoTotal</td>
+                    </tr>
+                }
+
+            </table>
+
+            <h3>Pedido</h3>
+
+            <table>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Mesa</th>
+                    <th>Subtotal</th>
+                    <th>Imp Servicio</th>
+                    <th>Costo</th>
+                    <th>Metodo</th>
+                    <th>Monto Cliente</th>
+                    <th>Cambio</th>
+                </tr>
+
+                @foreach (var datoPed in Model.DatosPed)
+                {
+                    <tr>
+                        <td>@datoPed.IdPedido</td>
+                        <td>@datoPed.Mesa</td>
+                        <td>₡ @datoPed.SubTotal</td>
+                        <td>₡ @datoPed.ImpServicio</td>
+                        <td>₡ @datoPed.MontoTotal</td>
+                        <td id="metodoPagoImpresion"></td>
+                        <td id="montoClienteImpresion"></td>
+                        <td id="cambioImpresion"></td>
+                    </tr>
+                }
+
+            </table>           
+
+        </div>
+
+        <div class="contenido-derecho">
+
+            <h3>Metodo de pago</h3>
+
+            <select id="MetodoPago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Sinpe">Sinpe</option>
+            </select>
+
+            <h3>Monto entregado por cliente</h3>
+            <input type="number" id="montoCliente" placeholder="₡" />
+
+            @*<h3>Cambio</h3>
+                <p id="cambioCalculado">₡ 0</p>*@
+
+            <h3> </h3>
+            <table>
+
+                @foreach (var datoPed in Model.DatosPed)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Agregar bebida", "Create", "PedidoDetalleBar", new { id = datoPed.IdPedido }, new { @class = "btn btn-info" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Agregar platillo", "Create", "PedidoDetalleRes", new { id = datoPed.IdPedido }, new { @class = "btn btn-warning" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Imprimir tiquete", "Imprimir", "Pedido", new { id = datoPed.IdPedido }, new { @class = "btn btn-success" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectMetodo = document.getElementById("MetodoPago");
+        const inputCliente = document.getElementById("montoCliente");
+        const campoMetodo = document.getElementById("metodoPagoImpresion");
+        const campoMontoCliente = document.getElementById("montoClienteImpresion");
+        const campoCambio = document.getElementById("cambioImpresion");
+        const campoCambioCalculado = document.getElementById("cambioCalculado");
+
+        // Simula el total del pedido (toma el primer pedido de la lista en este caso)
+        const montoTotal = parseFloat("@Model.DatosPed.First().MontoTotal");
+
+        // Mostrar valor inicial
+        campoMetodo.textContent = selectMetodo.value;
+
+        // Actualizar método de pago
+        selectMetodo.addEventListener("change", function () {
+            campoMetodo.textContent = this.value;
+        });
+
+        // Calcular cambio
+        inputCliente.addEventListener("input", function () {
+            const montoCliente = parseFloat(this.value) || 0;
+            const cambio = montoCliente - montoTotal;
+
+            campoMontoCliente.textContent = "₡ " + montoCliente;
+            campoCambio.textContent = "₡ " + cambio;
+            campoCambioCalculado.textContent = "₡ " + cambio;
+        });
+    });
+    </script>
+
+</body>
+
+</html>
 
 
-    @foreach (var datoTablaA in Model.DatosBar)
-    {
-        <tr>
-            <td>@datoTablaA.Cantidad</td>
-            <td>@datoTablaA.Nombre</td>
-            <td>@datoTablaA.CostoTotal</td>
-        </tr>
-    }
-
-</table>
-
-<h2>Platillos de la orden</h2>
-
-<table class="table">
-
-    <tr>
-        <th>Cantidad</th>
-        <th>Platillo</th>
-        <th>Observacion</th>
-        <th>Costo</th>
-    </tr>
-
-
-    @foreach (var datoTablaB in Model.DatosRes)
-    {
-        <tr>
-            <td>@datoTablaB.Cantidad</td>
-            <td>@datoTablaB.Nombre</td>
-            <td>@datoTablaB.Observacion</td>
-            <td>@datoTablaB.CostoTotal</td>
-        </tr>
-    }
-
-</table>
-
-<h2>Pedido</h2>
-
-<table class="table">
-
-    <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>Pedido</th>
-        <th>Mesa</th>
-        <th>Subtotal</th>
-        <th>Imp Servicio</th>
-        <th>Costo</th>
-    </tr>
-
-    @foreach (var datoPed in Model.DatosPed)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink("Agregar bebida", "Create", "PedidoDetalleBar", new { id = datoPed.IdPedido }, new { @class = "btn btn-info" })
-            </td>
-            <td>
-                @Html.ActionLink("Agregar platillo", "Create", "PedidoDetalleRes", new { id = datoPed.IdPedido }, new { @class = "btn btn-warning" })
-            </td>
-            <td>
-                @Html.ActionLink("Imprimir tiquete", "Imprimir", "Pedido", new { id = datoPed.IdPedido }, new { @class = "btn btn-success" })
-            </td>
-
-            <td>@datoPed.IdPedido</td>
-            <td>@datoPed.Mesa</td>
-            <td>@datoPed.SubTotal</td>
-            <td>@datoPed.ImpServicio</td>
-            <td>@datoPed.MontoTotal</td>
-        </tr>
-
-    }
-
-</table>
 
 
 
