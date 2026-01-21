@@ -1,6 +1,16 @@
-﻿.header {
-    background-color: #A6A6A6;
+﻿.table-container {
+    color: black;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     text-align: center;
-    border-radius: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);   
+    width: 100%;
 }
+
+.table-container th {
+    color: black;
+    background-color: lightgrey;
+    text-align: center;
+}
+
