@@ -118,6 +118,7 @@
     <Property Name="Id_ProductoBar" Type="Int32" />
     <NavigationProperty Name="PedidoDetalleRes" Relationship="QuercusPedidosModel.FK__Pedido__46E78A0C" FromRole="Pedido" ToRole="PedidoDetalleRes" />
     <NavigationProperty Name="PedidoDetalleBar" Relationship="QuercusPedidosModel.FK__Pedido__47DBAE45" FromRole="Pedido" ToRole="PedidoDetalleBar" />
+    <Property Name="RequiereServicio" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK__Pedido__46E78A0C">
     <End Type="QuercusPedidosModel.PedidoDetalleRes" Role="PedidoDetalleRes" Multiplicity="0..1" />

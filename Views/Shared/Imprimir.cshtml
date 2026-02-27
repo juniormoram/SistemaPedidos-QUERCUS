@@ -58,19 +58,19 @@
 
                     <td></td>
                     <td class="produc">Subtotal</td>
-                    <td>₡@datoPed.SubTotal</td>                      
+                    <td>₡<span id="subtotal">@datoPed.SubTotal</span></td>
                 </tr>
                 <tr class="produc">
 
                     <td></td>
                     <td class="produc">10% serv</td>
-                    <td>₡@datoPed.ImpServicio</td>
+                    <td>₡<span id="impServicio">@datoPed.ImpServicio</span></td>
                 </tr>
                 <tr class="produc">
 
                     <td></td>
                     <td class="produc">Total</td>
-                    <td>₡@datoPed.MontoTotal</td>
+                    <td>₡<span id="total">@datoPed.MontoTotal</span></td>
                 </tr>
 
             }
@@ -81,7 +81,40 @@
             ¡GRACIAS POR SU COMPRA!
         </p>
         <button class="oculto-impresion" onclick="imprimir(@Model.DatosPed.First().IdPedido)">Imprimir</button>
+        @*<label class="oculto-impresion">
+            <input type="checkbox" id="chkServicio" checked />
+            Aplicar 10% servicio
+        </label>*@
     </div>
+
+    <!-- Recalculo Impuesto de Servicio -->
+
+    @*<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const chkServicio = document.getElementById("chkServicio");
+            const subtotal = parseFloat(document.getElementById("subtotal").innerText);
+            const impServicioSpan = document.getElementById("impServicio");
+            const totalSpan = document.getElementById("total");
+            const lineaServicio = document.getElementById("lineaServicio");
+
+            chkServicio.addEventListener("change", function () {
+
+                if (chkServicio.checked) {
+                    let impuesto = subtotal * 0.10;
+                    impServicioSpan.innerText = impuesto.toFixed(0);
+                    totalSpan.innerText = (subtotal + impuesto).toFixed(0);
+                    lineaServicio.style.display = "block";
+                } else {
+                    impServicioSpan.innerText = "0";
+                    totalSpan.innerText = subtotal.toFixed(0);
+                    lineaServicio.style.display = "none";
+                }
+            });
+
+        });
+    </script>*@
+
 </body>
 </html>
 

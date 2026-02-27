@@ -28,6 +28,7 @@ namespace QuercusPedidos.Controllers
             return View(await detalles.ToListAsync());
         }
 
+        // Actualización de montos del pedido al incluir bebidas
         private void ActualizarTotalesPedido(int idPedido)
         {
             using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
@@ -45,10 +46,20 @@ namespace QuercusPedidos.Controllers
 
                 double iva = 0.13;
                 double impServi = 0.10;
+                int impServCalc = 0;
 
                 int totalBruto = subTotRes + subTotBar;
                 int ivaCalc = (int)(iva * totalBruto);
-                int impServCalc = (int)(impServi * totalBruto);
+
+                if (pedido.RequiereServicio == true)
+                {
+                    impServCalc = (int)(impServi * totalBruto);
+                }
+                else
+                {
+                    impServCalc = 0;
+                }
+                
                 int totalFinal = totalBruto + impServCalc;
 
                 pedido.Subtotal = totalBruto;
@@ -130,20 +141,17 @@ namespace QuercusPedidos.Controllers
         {
             if (ModelState.IsValid)
             {
-                //ProductoRes productoRes = new ProductoRes();
+                ProductoRes productoRes = new ProductoRes();
 
-                //using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
-                //{
-                //    ProductoRes prod = (from p in BD.ProductoRes
-                //                        where p.Id_ProductoRes == pedidoDetalleRes.Id_ProductoRes
-                //                        select p).First();
-                //    productoRes = prod;
-                //}
-
-                try
+                using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
                 {
-                    //int precioProd = productoRes.Precio;
-                    //pedidoDetalleRes.CostoTotal = precioProd * pedidoDetalleRes.Cantidad;
+                    ProductoRes prod = (from p in BD.ProductoRes
+                                       where p.Id_ProductoRes == pedidoDetalleRes.Id_ProductoRes
+                                        select p).First();
+                    productoRes = prod;
+                }                
+                    int precioProd = productoRes.Precio;
+                    pedidoDetalleRes.CostoTotal = precioProd * pedidoDetalleRes.Cantidad;
                     pedidoDetalleRes.Id_ResDetalle = (int)id;
 
                     db.Entry(pedidoDetalleRes).State = EntityState.Modified;
@@ -152,11 +160,7 @@ namespace QuercusPedidos.Controllers
                     ActualizarTotalesPedido((int)id);
 
                     return RedirectToAction("Index");
-                }
-                catch
-                {
-                    Response.Write("Por favor acortar la observarción del platillo");
-                }
+                
             }
             ViewBag.Id_ProductoRes = new SelectList(db.ProductoRes, "Id_ProductoRes", "Nombre", pedidoDetalleRes.Id_ProductoRes);
             return View(pedidoDetalleRes);

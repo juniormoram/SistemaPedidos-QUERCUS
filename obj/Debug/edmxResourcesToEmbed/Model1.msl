@@ -54,6 +54,7 @@
     <EntitySetMapping Name="Pedido">
       <EntityTypeMapping TypeName="QuercusPedidosModel.Pedido">
         <MappingFragment StoreEntitySet="Pedido">
+          <ScalarProperty Name="RequiereServicio" ColumnName="RequiereServicio" />
           <ScalarProperty Name="Id_ProductoBar" ColumnName="Id_ProductoBar" />
           <ScalarProperty Name="Id_BarDetalle" ColumnName="Id_BarDetalle" />
           <ScalarProperty Name="Id_ProductoRes" ColumnName="Id_ProductoRes" />

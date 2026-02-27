@@ -15,6 +15,7 @@
     <Property Name="Id_ProductoRes" Type="int" />
     <Property Name="Id_BarDetalle" Type="int" />
     <Property Name="Id_ProductoBar" Type="int" />
+    <Property Name="RequiereServicio" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PedidoDetalleBar">
     <Key>

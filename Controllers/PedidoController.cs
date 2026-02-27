@@ -176,8 +176,11 @@ namespace QuercusPedidos.Controllers
                                     select new DetallePedido 
                                     {
                                         IdPedido = p.Id_Pedido,
+                                        IdDetalleBar = b.Id_BarDetalle,
+                                        IdProductoBar = pr.Id_ProductoBar,
                                         Nombre = pr.Nombre,
                                         Cantidad = b.Cantidad,
+                                        PrecioUnitario = pr.Precio,
                                         CostoTotal = b.CostoTotal,
                                         MontoTotal = p.Total,
                                     }).ToList();
@@ -189,8 +192,11 @@ namespace QuercusPedidos.Controllers
                                     select new DetallePedido
                                     {
                                         IdPedido = p.Id_Pedido,
+                                        IdDetalleRes = b.Id_ResDetalle,
+                                        IdProductoRes = pr.Id_ProductoRes,
                                         Nombre = pr.Nombre,
                                         Cantidad = b.Cantidad,
+                                        PrecioUnitario = pr.Precio,
                                         CostoTotal = b.CostoTotal,
                                         Observacion = b.Observacion,
                                     }).ToList();
@@ -203,7 +209,7 @@ namespace QuercusPedidos.Controllers
                                         IdPedido = p.Id_Pedido,
                                         Mesa = p.Mesa,
                                         MontoTotal = p.Total,
-                                        ImpServicio = p.Subtotal * 0.10,
+                                        ImpServicio = p.RequiereServicio ? p.Subtotal * 0.10 : 0,
                                         SubTotal = p.Subtotal,
                                     }).ToList();
 
@@ -217,6 +223,81 @@ namespace QuercusPedidos.Controllers
             return viewModel;
         }
 
+        //Actualizar cantidades de bebidas y platillos en pantalla "Detalles"
+        [HttpPost]
+        public ActionResult ActualizarCantidad(string tipo, int idDetalle, int idProducto, int nuevaCantidad)
+        {
+            try
+            {
+                int impServicio = 0;
+                double impServi = 0.10;
+                double iva = 0.13;
+
+                if (tipo == "bar")
+                {                    
+                    var fila = db.PedidoDetalleBar
+                                 .FirstOrDefault(b => b.Id_BarDetalle == idDetalle
+                                                   && b.Id_ProductoBar == idProducto);
+                    if (fila == null)
+                        return Json(new { success = false, msg = "Bebida no encontrada" });
+
+                    var producto = db.ProductoBar.Find(idProducto);
+                    fila.Cantidad = nuevaCantidad;
+                    fila.CostoTotal = nuevaCantidad * producto.Precio;
+                    db.SaveChanges();
+                }
+                else // res
+                {                    
+                    var fila = db.PedidoDetalleRes
+                                 .FirstOrDefault(r => r.Id_ResDetalle == idDetalle
+                                                   && r.Id_ProductoRes == idProducto);
+                    if (fila == null)
+                        return Json(new { success = false, msg = "Platillo no encontrado" });
+
+                    var producto = db.ProductoRes.Find(idProducto);
+                    fila.Cantidad = nuevaCantidad;
+                    fila.CostoTotal = nuevaCantidad * producto.Precio;
+                    db.SaveChanges();
+                }
+
+                // Recalcular totales del pedido
+                int subTotBar = db.PedidoDetalleBar
+                                  .Where(b => b.Id_BarDetalle == idDetalle)
+                                  .Sum(b => (int?)b.CostoTotal) ?? 0;
+
+                int subTotRes = db.PedidoDetalleRes
+                                  .Where(r => r.Id_ResDetalle == idDetalle)
+                                  .Sum(r => (int?)r.CostoTotal) ?? 0;
+
+                var pedido = db.Pedido.Find(idDetalle); 
+
+                int subtotal = subTotBar + subTotRes;
+
+                if (pedido.RequiereServicio == true)
+                {
+                    impServicio = (int)(impServi * subtotal);
+                }
+                else
+                {
+                    impServicio = 0;
+                }
+                
+                int ivaCalc = (int)(iva * subtotal);
+                int total = subtotal + impServicio;
+                
+                pedido.Subtotal = subtotal;
+                pedido.Iva = ivaCalc;
+                pedido.Total = total;
+                db.SaveChanges();
+
+                return Json(new { success = true, subtotal, impServicio, total });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, msg = ex.Message });
+            }
+        }
+
         // GET: Pedido/Create
         public ActionResult Create()
         {
@@ -228,16 +309,16 @@ namespace QuercusPedidos.Controllers
         // POST: Pedido/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id_Pedido,Mesa,Estado,Fecha,Subtotal,Iva,Total,Id_ResDetalle,Id_ProductoRes,Id_BarDetalle,Id_ProductoBar, ImpServicio")] Pedido pedido)
+        public ActionResult Create([Bind(Include = "Id_Pedido,Mesa,Estado,Fecha,Subtotal,Iva,Total,Id_ResDetalle,Id_ProductoRes,Id_BarDetalle,Id_ProductoBar, RequiereServicio")] Pedido pedido)
         {            
             if (ModelState.IsValid)
             {
                 PedidoDetalleRes DetalleRes = new PedidoDetalleRes();
                 PedidoDetalleBar DetalleBar = new PedidoDetalleBar();
-                double ImpServi = 0.10;
+                double impServi = 0.10;
                 double iva = 0.13;
-                int IVA = 0;
-                int IMPSERVICIO = 0;
+                int ivaCal = 0;
+                int impServiCal = 0;
 
                 List<PedidoDetalleRes> ListDetalleRes = new List<PedidoDetalleRes>();
                 int subTotRes = 0;
@@ -274,14 +355,21 @@ namespace QuercusPedidos.Controllers
                         subTotBar += d.CostoTotal;
                     }
                 }
-                                
-                IVA = (int)(iva * (subTotRes + subTotBar));
-                IMPSERVICIO = (int)(ImpServi * (subTotRes + subTotBar));
+                                                               
+                ivaCal = (int)(iva * (subTotRes + subTotBar));
+
+                if (pedido.RequiereServicio == true)
+                {
+                    impServiCal = (int)(impServi * (subTotRes + subTotBar));
+                } else
+                {
+                    impServiCal = 0;
+                }
+
                 pedido.Fecha = DateTime.Now;
                 pedido.Subtotal = subTotRes + subTotBar;
-                pedido.Iva = (int)(iva * (subTotRes + subTotBar));                
-                pedido.Total = subTotRes + subTotBar + IMPSERVICIO;
-
+                pedido.Iva = ivaCal;                
+                pedido.Total = subTotRes + subTotBar + impServiCal;
                 
                 db.Pedido.Add(pedido);
                 db.SaveChanges();
@@ -295,7 +383,7 @@ namespace QuercusPedidos.Controllers
                 return RedirectToAction("Index");
 
             }
-
+            
             ViewBag.Id_ResDetalle = new SelectList(db.PedidoDetalleRes, "Id_ResDetalle", "Observacion", pedido.Id_ResDetalle);
             ViewBag.Id_BarDetalle = new SelectList(db.PedidoDetalleBar, "Id_BarDetalle", "Id_BarDetalle", pedido.Id_BarDetalle);
             return View(pedido);
@@ -322,7 +410,7 @@ namespace QuercusPedidos.Controllers
         // POST: Pedido/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id_Pedido,Mesa,Estado,Fecha,Subtotal,Iva,Total,Id_ResDetalle,Id_ProductoRes,Id_BarDetalle,Id_ProductoBar")] Pedido pedido)
+        public ActionResult Edit([Bind(Include = "Id_Pedido,Mesa,Estado,Fecha,Subtotal,Iva,Total,Id_ResDetalle,Id_ProductoRes,Id_BarDetalle,Id_ProductoBar, RequiereServicio")] Pedido pedido)
         {
             pedido.Id_BarDetalle = pedido.Id_Pedido;
             pedido.Id_ResDetalle = pedido.Id_Pedido;
@@ -331,10 +419,10 @@ namespace QuercusPedidos.Controllers
             {
                 PedidoDetalleRes DetalleRes = new PedidoDetalleRes();
                 PedidoDetalleBar DetalleBar = new PedidoDetalleBar();
-                double ImpServi = 0.10;
+                double impServi = 0.10;
                 double iva = 0.13;
-                int IVA = 0;
-                int IMPSERVICIO = 0;
+                int ivaCal = 0;
+                int impServiCal = 0;
 
                 List<PedidoDetalleRes> ListDetalleRes = new List<PedidoDetalleRes>();
                 int subTotRes = 0;
@@ -372,12 +460,21 @@ namespace QuercusPedidos.Controllers
                     }
                 }
 
-                IVA = (int)(iva * (subTotRes + subTotBar));
-                IMPSERVICIO = (int)(ImpServi * (subTotRes + subTotBar));
+                ivaCal = (int)(iva * (subTotRes + subTotBar));
+
+                if (pedido.RequiereServicio == true)
+                {
+                    impServiCal = (int)(impServi * (subTotRes + subTotBar));
+                }
+                else
+                {
+                    impServiCal = 0;
+                }
+                
                 pedido.Fecha = DateTime.Now;
                 pedido.Subtotal = subTotRes + subTotBar;
-                pedido.Iva = (int)(iva * (subTotRes + subTotBar));
-                pedido.Total = subTotRes + subTotBar + IMPSERVICIO;
+                pedido.Iva = ivaCal;
+                pedido.Total = subTotRes + subTotBar + impServiCal;
 
                 db.Entry(pedido).State = EntityState.Modified;
                 db.SaveChanges();
@@ -412,7 +509,7 @@ namespace QuercusPedidos.Controllers
             db.Pedido.Remove(pedido);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        }       
 
         protected override void Dispose(bool disposing)
         {
@@ -423,4 +520,5 @@ namespace QuercusPedidos.Controllers
             base.Dispose(disposing);
         }
     }
+
 }

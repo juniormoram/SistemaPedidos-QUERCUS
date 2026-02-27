@@ -72,16 +72,37 @@
                         <th>Cantidad</th>
                         <th>Bebida</th>
                         <th>Costo</th>
+                        <th></th>
                     </tr>
 
-                    @foreach (var datoTablaA in Model.DatosBar)
+                    @foreach (var item in Model.DatosBar)
+                    {
+                        <tr data-tipo="bar"
+                            data-detalle="@item.IdDetalleBar"
+                            data-producto="@item.IdProductoBar"
+                            data-precio="@item.PrecioUnitario">
+                            <td>
+                                <input type="number" class="input-cantidad"
+                                       value="@item.Cantidad" min="1" style="width:60px" />
+                            </td>
+                            <td>@item.Nombre</td>
+                            <td class="celda-costo">₡ @item.CostoTotal</td>
+                            <td>
+                                <button class="btn btn-sm btn-guardar">Guardar</button>
+                                <span class="msg-ok text-success" style="display:none">✔</span>
+                                <span class="msg-err text-danger" style="display:none">✖</span>
+                            </td>
+                        </tr>
+                    }
+
+                    @*@foreach (var datoTablaA in Model.DatosBar)
                     {
                         <tr>
                             <td>@datoTablaA.Cantidad</td>
                             <td>@datoTablaA.Nombre</td>
                             <td>₡ @datoTablaA.CostoTotal</td>
                         </tr>
-                    }
+                    }*@
                 </table>
             </div>
 
@@ -93,9 +114,31 @@
                         <th>Platillo</th>
                         <th>Observacion</th>
                         <th>Costo</th>
+                        <th></th>
                     </tr>
 
-                    @foreach (var datoTablaB in Model.DatosRes)
+                    @foreach (var item in Model.DatosRes)
+                    {
+                        <tr data-tipo="res"
+                            data-detalle="@item.IdDetalleRes"
+                            data-producto="@item.IdProductoRes"
+                            data-precio="@item.PrecioUnitario">
+                            <td>
+                                <input type="number" class="input-cantidad"
+                                       value="@item.Cantidad" min="1" style="width:60px" />
+                            </td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Observacion</td>
+                            <td class="celda-costo">₡ @item.CostoTotal</td>
+                            <td>
+                                <button class="btn btn-sm btn-guardar">Guardar</button>
+                                <span class="msg-ok text-success" style="display:none">✔</span>
+                                <span class="msg-err text-danger" style="display:none">✖</span>
+                            </td>
+                        </tr>
+                    }
+
+                    @*@foreach (var datoTablaB in Model.DatosRes)
                     {
                         <tr>
                             <td>@datoTablaB.Cantidad</td>
@@ -103,7 +146,7 @@
                             <td>@datoTablaB.Observacion</td>
                             <td>₡ @datoTablaB.CostoTotal</td>
                         </tr>
-                    }
+                    }*@
 
                 </table>
             </div>
@@ -127,6 +170,20 @@
                         <tr>
                             <td>@datoPed.IdPedido</td>
                             <td>@datoPed.Mesa</td>
+                            <td id="tdSubTotal">₡ @datoPed.SubTotal</td>
+                            <td id="tdImpServicio">₡ @datoPed.ImpServicio</td>
+                            <td id="tdMontoTotal">₡ @datoPed.MontoTotal</td>
+                            <td id="metodoPagoImpresion"></td>
+                            <td id="montoClienteImpresion"></td>
+                            <td id="cambioImpresion"></td>
+                        </tr>
+                    }
+
+                    @*@foreach (var datoPed in Model.DatosPed)
+                    {
+                        <tr>
+                            <td>@datoPed.IdPedido</td>
+                            <td>@datoPed.Mesa</td>
                             <td>₡ @datoPed.SubTotal</td>
                             <td>₡ @datoPed.ImpServicio</td>
                             <td>₡ @datoPed.MontoTotal</td>
@@ -134,7 +191,7 @@
                             <td id="montoClienteImpresion"></td>
                             <td id="cambioImpresion"></td>
                         </tr>
-                    }
+                    }*@
 
                 </table>
             </div>
@@ -181,36 +238,85 @@
         </div>
 
     <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const selectMetodo = document.getElementById("MetodoPago");
-        const inputCliente = document.getElementById("montoCliente");
-        const campoMetodo = document.getElementById("metodoPagoImpresion");
-        const campoMontoCliente = document.getElementById("montoClienteImpresion");
-        const campoCambio = document.getElementById("cambioImpresion");
-        const campoCambioCalculado = document.getElementById("cambioCalculado");
-
-        // Simula el total del pedido (toma el primer pedido de la lista en este caso)
-        const montoTotal = parseFloat("@Model.DatosPed.First().MontoTotal");
-
-        // Mostrar valor inicial
-        campoMetodo.textContent = selectMetodo.value;
-
-        // Actualizar método de pago
-        selectMetodo.addEventListener("change", function () {
-            campoMetodo.textContent = this.value;
-        });
-
-        // Calcular cambio
-        inputCliente.addEventListener("input", function () {
-            const montoCliente = parseFloat(this.value) || 0;
-            const cambio = montoCliente - montoTotal;
-
-            campoMontoCliente.textContent = "₡ " + montoCliente;
-            campoCambio.textContent = "₡ " + cambio;
-            campoCambioCalculado.textContent = "₡ " + cambio;
+    // Actualiza costo visualmente al cambiar cantidad
+    document.querySelectorAll(".input-cantidad").forEach(function (input) {
+        input.addEventListener("input", function () {
+            var fila   = this.closest("tr");
+            var precio = parseInt(fila.dataset.precio) || 0;
+            var cant   = parseInt(this.value) || 0;
+            fila.querySelector(".celda-costo").textContent = "₡ " + (precio * cant);
         });
     });
+
+    // Guardar via AJAX
+    document.querySelectorAll(".btn-guardar").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            var fila      = this.closest("tr");
+            var tipo      = fila.dataset.tipo;
+            var idDetalle = fila.dataset.detalle;
+            var idProd    = fila.dataset.producto;
+            var cantidad  = parseInt(fila.querySelector(".input-cantidad").value);
+            var msgOk     = fila.querySelector(".msg-ok");
+            var msgErr    = fila.querySelector(".msg-err");
+
+            if (cantidad < 1) { alert("Cantidad mínima: 1"); return; }
+
+            fetch('@Url.Action("ActualizarCantidad", "Pedido")', {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "tipo="          + tipo      +
+                      "&idDetalle="    + idDetalle +
+                      "&idProducto="   + idProd    +
+                      "&nuevaCantidad="+ cantidad
+            })
+            .then(r => r.json())
+            .then(function (res) {
+                if (res.success) {
+                    // Actualizar totales en pantalla
+                    document.getElementById("tdSubTotal").textContent    = "₡ " + res.subtotal;
+                    document.getElementById("tdImpServicio").textContent = "₡ " + res.impServicio;
+                    document.getElementById("tdMontoTotal").textContent  = "₡ " + res.total;
+
+                    // Recalcular cambio si el cliente ya ingresó monto
+                    var mc = parseFloat(document.getElementById("montoCliente").value) || 0;
+                    if (mc > 0) {
+                        document.getElementById("montoClienteImpresion").textContent = "₡ " + mc;
+                        document.getElementById("cambioImpresion").textContent = "₡ " + (mc - res.total);
+                    }
+
+                    msgOk.style.display = "inline";
+                    msgErr.style.display = "none";
+                    setTimeout(() => msgOk.style.display = "none", 2000);
+                } else {
+                    msgErr.textContent   = "✖ " + res.msg;
+                    msgErr.style.display = "inline";
+                }
+            })
+            .catch(() => {
+                msgErr.textContent   = "✖ Error de conexión";
+                msgErr.style.display = "inline";
+            });
+        });
+    });
+
+    // Tu lógica original de método de pago y cambio
+    const selectMetodo = document.getElementById("MetodoPago");
+    const inputCliente = document.getElementById("montoCliente");
+    const campoMetodo  = document.getElementById("metodoPagoImpresion");
+
+    campoMetodo.textContent = selectMetodo.value;
+    selectMetodo.addEventListener("change", () => campoMetodo.textContent = selectMetodo.value);
+
+    inputCliente.addEventListener("input", function () {
+        var mc    = parseFloat(this.value) || 0;
+        var total = parseInt(document.getElementById("tdMontoTotal")
+                              .textContent.replace("₡ ", "")) || 0;
+        document.getElementById("montoClienteImpresion").textContent = "₡ " + mc;
+        document.getElementById("cambioImpresion").textContent       = "₡ " + (mc - total);
+    });
+});
     </script>
 
 </body>

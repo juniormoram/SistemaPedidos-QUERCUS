@@ -4,57 +4,74 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Pedidos/ordenes</h2>
+<link href="~/Content/style.css" rel="stylesheet" />
+
+@*<h2>Pedidos/ordenes</h2>*@
+
+<h2> </h2>
 
 <p>
-    @Html.ActionLink("Nuevo pedido", "Create")
+    @Html.ActionLink("Nuevo pedido", "Create", null, new { @class = "btn btn-info" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @*<a asp-action="Index" asp-route-filtro="@ViewData["FiltroPedido"]"></a>*@
-            Pedido/Orden
-        </th>
-        <th>
-            Mesa/Cliente
-        </th>
-        <th>
-            Cancelada?
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fecha)
-        </th>        
-        <th>
-            Monto Total
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<div class="table-container">
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id_Pedido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mesa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>            
-            <td>
-                ₡ @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.ActionLink("Actualizar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |
-                @Html.ActionLink("Detalles", "DetallePedido", "Pedido", new { id = item.Id_Pedido }, new { @class = "btn btn-success" }) |
-                @Html.ActionLink("Agregar bebida", "Create", "PedidoDetalleBar", new { id = item.Id_Pedido }, new { @class = "btn btn-info" })
-                @Html.ActionLink("Agregar platillo", "Create", "PedidoDetalleRes", new { id = item.Id_Pedido }, new { @class = "btn btn-warning" })
-            </td>
+            <th>
+                @*<a asp-action="Index" asp-route-filtro="@ViewData["FiltroPedido"]"></a>*@
+                Pedido/Orden
+            </th>
+            <th>
+                Mesa/Cliente
+            </th>
+            <th>
+                Estado
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                Monto Total
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id_Pedido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mesa)
+                </td>
+                <td>
+                    @if (item.Estado == true)
+                    {
+                        <span class="badge" style="background-color: #dc3545; color: white">Cancelado</span>
+                    }
+                    else
+                    {
+                        <span class="badge" style="background-color: #28a745; color: white">Activo</span>
+                    }
+                </td>
+                <td>
+                    <small>@item.Fecha.ToString("dd/MM/yyyy")</small> <br/>
+                    <small class="text-muted">@item.Fecha.ToString("hh:mm tt")</small>
+                </td>
+                <td>
+                    ₡ @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.ActionLink("Actualizar", "Edit", new { id = item.Id_Pedido }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Detalles", "DetallePedido", "Pedido", new { id = item.Id_Pedido }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Agregar bebida", "Create", "PedidoDetalleBar", new { id = item.Id_Pedido }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Agregar platillo", "Create", "PedidoDetalleRes", new { id = item.Id_Pedido }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

@@ -28,6 +28,7 @@ namespace QuercusPedidos.Controllers
             return View(await detalles.ToListAsync());
         }
 
+        // Actualización de montos del pedido al incluir bebidas
         private void ActualizarTotalesPedido(int idPedido)
         {
             using (QuercusPedidosEntities BD = new QuercusPedidosEntities())
@@ -45,10 +46,20 @@ namespace QuercusPedidos.Controllers
 
                 double iva = 0.13;
                 double impServi = 0.10;
+                int impServCalc = 0;
 
                 int totalBruto = subTotRes + subTotBar;
-                int ivaCalc = (int)(iva * totalBruto);
-                int impServCalc = (int)(impServi * totalBruto);
+                int ivaCalc = (int)(iva * totalBruto);                
+
+                if (pedido.RequiereServicio == true)
+                {
+                    impServCalc = (int)(impServi * totalBruto);
+                }
+                else
+                {
+                    impServCalc = 0;
+                }
+
                 int totalFinal = totalBruto + impServCalc;
 
                 pedido.Subtotal = totalBruto;

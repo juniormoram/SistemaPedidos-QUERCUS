@@ -25,6 +25,7 @@ namespace QuercusPedidos
         public Nullable<int> Id_ProductoRes { get; set; }
         public Nullable<int> Id_BarDetalle { get; set; }
         public Nullable<int> Id_ProductoBar { get; set; }
+        public bool RequiereServicio { get; set; }
     
         public virtual PedidoDetalleRes PedidoDetalleRes { get; set; }
         public virtual PedidoDetalleBar PedidoDetalleBar { get; set; }

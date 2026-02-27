@@ -20,6 +20,7 @@
           <Property Name="Id_ProductoRes" Type="int" />
           <Property Name="Id_BarDetalle" Type="int" />
           <Property Name="Id_ProductoBar" Type="int" />
+          <Property Name="RequiereServicio" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PedidoDetalleBar">
           <Key>
@@ -230,6 +231,7 @@
           <Property Name="Id_ProductoBar" Type="Int32" />
           <NavigationProperty Name="PedidoDetalleRes" Relationship="QuercusPedidosModel.FK__Pedido__46E78A0C" FromRole="Pedido" ToRole="PedidoDetalleRes" />
           <NavigationProperty Name="PedidoDetalleBar" Relationship="QuercusPedidosModel.FK__Pedido__47DBAE45" FromRole="Pedido" ToRole="PedidoDetalleBar" />
+          <Property Name="RequiereServicio" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__Pedido__46E78A0C">
           <End Type="QuercusPedidosModel.PedidoDetalleRes" Role="PedidoDetalleRes" Multiplicity="0..1" />
@@ -318,6 +320,7 @@
           <EntitySetMapping Name="Pedido">
             <EntityTypeMapping TypeName="QuercusPedidosModel.Pedido">
               <MappingFragment StoreEntitySet="Pedido">
+                <ScalarProperty Name="RequiereServicio" ColumnName="RequiereServicio" />
                 <ScalarProperty Name="Id_ProductoBar" ColumnName="Id_ProductoBar" />
                 <ScalarProperty Name="Id_BarDetalle" ColumnName="Id_BarDetalle" />
                 <ScalarProperty Name="Id_ProductoRes" ColumnName="Id_ProductoRes" />

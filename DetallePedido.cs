@@ -30,6 +30,11 @@ namespace QuercusPedidos
         public DateTime Fecha { get; set; }
         public int MontoRes { get; set; }
         public int MontoBar { get; set; }
-                
+        public int IdDetalleBar { get; set; }   
+        public int IdProductoBar { get; set; }  
+        public int IdDetalleRes { get; set; }
+        public int IdProductoRes { get; set; }
+        public int PrecioUnitario { get; set; }
+
     }
 }
